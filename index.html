@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorite Movies and Actors</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Container */
+        .container {
+            max-width: 800px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        /* Headings */
+        h1 {
+            color: #2a9d8f;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #264653;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        /* Section Title */
+        h3 {
+            color: #264653;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-top: 20px;
+            max-width: 100%;
+        }
+
+        .image-gallery img {
+            max-width: 300px;
+            height: 400px;
+            object-fit: cover;
+            display: none;
+            border: 2px solid #e76f51;
+            border-radius: 8px;
+            transition: opacity 0.5s ease;
+        }
+
+        .image-gallery img.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .image-gallery .arrow {
+            position: absolute;
+            top: 50%;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 2em;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .image-gallery .arrow:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .arrow-left {
+            left: 20px;
+        }
+
+        .arrow-right {
+            right: 20px;
+        }
+
+        .caption {
+            font-size: 1.2em;
+            color: #264653;
+            margin-top: 10px;
+        }
+
+        /* Multimedia */
+        video, audio {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        /* Paragraph */
+        p {
+            color: #555;
+            font-size: 1em;
+            margin: 10px auto;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Title and Headings -->
+        <h1>My Movie & Entertainment Page</h1>
+        <h2>Welcome to my list of favorites</h2>
+
+        <!-- Movies Section -->
+        <h3>Movies</h3>
+        <div class="image-gallery" id="movie-gallery">
+            <img src="Inception.jpeg" alt="Inception Poster" class="active">
+            <img src="matrix.jpg" alt="The Matrix Poster">
+            <img src="Gravity.jpeg" alt="Gravity Poster">
+            <img src="The-Terminator.jpeg" alt="The Terminator Poster">
+            <img src="passengers.jpg" alt="Passengers Poster">
+            <!-- Arrows for navigation -->
+            <button class="arrow arrow-left" onclick="changeImage('movie', 'prev')">&#10094;</button>
+            <button class="arrow arrow-right" onclick="changeImage('movie', 'next')">&#10095;</button>
+        </div>
+        <div class="caption" id="movie-caption">Inception Poster</div>
+
+        <!-- Actors Section -->
+        <h3>Actors</h3>
+        <div class="image-gallery" id="actor-gallery">
+            <img src="Tom-Cruise.jpg" alt="Tom Cruise" class="active">
+            <img src="Jennifer-Lawrence.jpg" alt="Jennifer Lawrence">
+            <img src="arnold-schwarzenegger.jpg" alt="Arnold schwarzenegger">
+            <img src="Liam-Neeson.jpg" alt="Liam Neeson">
+            <img src="angelina-jolie.jpg" alt="Angelina jolie">
+            <!-- Arrows for navigation -->
+            <button class="arrow arrow-left" onclick="changeImage('actor', 'prev')">&#10094;</button>
+            <button class="arrow arrow-right" onclick="changeImage('actor', 'next')">&#10095;</button>
+        </div>
+        <div class="caption" id="actor-caption">Tom Cruise</div>
+
+        <!-- Video Section -->
+        <h3>Waves Crashing Against the Rocks</h3>
+        <video controls>
+            <source src="VideoSample.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p>This video recorded a powerful natural moment as ocean waves crash against a rugged rock formation. The scene showcases the contrast between the deep, swirling blue-green of the water and the earthy, textured surface of the rock. The waves' white foam highlights the sea's constant motion and energy, creating a sense of dynamic beauty. The interplay of water and land in this frame evokes themes of strength and resilience, with the rock standing firm against the relentless force of the waves. This scene likely continues throughout the video, offering viewers a mesmerizing display of nature's raw and captivating power.</p>
+
+        <!-- Audio Section -->
+        <h3>Just a little Music at the end</h3>
+        <audio controls>
+            <source src="AudioSample.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <p>Perfect background music for relaxation and a peaceful vibe.</p>
+    </div>
+    <!-- External Link -->
+    <p>For more details about movies, visit <a href="https://www.imdb.com" target="_blank">IMDb</a>.</p>
+
+
+    <!-- JavaScript for Image Galleries with Arrows -->
+    <script>
+        let currentMovieIndex = 0;
+        let currentActorIndex = 0;
+        
+        // Movie and Actor Galleries
+        const movieImages = document.querySelectorAll('#movie-gallery img');
+        const actorImages = document.querySelectorAll('#actor-gallery img');
+        
+        // Captions
+        const movieCaptions = [
+            "Inception", 
+            "The Matrix", 
+            "Interstellar", 
+            "The Terminator", 
+            "Passengers"
+        ];
+        
+        const actorCaptions = [
+            "Tom Cruise", 
+            "Jennifer Lawrence", 
+            "Arnold schwarzenegger", 
+            "Liam Neeson", 
+            "Angelina jolie"
+        ];
+
+        function changeImage(galleryType, direction) {
+            let currentIndex, images, captions, captionElement;
+            
+            if (galleryType === 'movie') {
+                currentIndex = currentMovieIndex;
+                images = movieImages;
+                captions = movieCaptions;
+                captionElement = document.getElementById('movie-caption');
+            } else {
+                currentIndex = currentActorIndex;
+                images = actorImages;
+                captions = actorCaptions;
+                captionElement = document.getElementById('actor-caption');
+            }
+
+            if (direction === 'next') {
+                currentIndex = (currentIndex + 1) % images.length;
+            } else {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+            }
+
+            // Update the displayed image
+            images.forEach((img, i) => {
+                img.classList.remove('active');
+                if (i === currentIndex) img.classList.add('active');
+            });
+
+            // Update the caption
+            captionElement.textContent = captions[currentIndex];
+
+            // Update the global index
+            if (galleryType === 'movie') {
+                currentMovieIndex = currentIndex;
+            } else {
+                currentActorIndex = currentIndex;
+            }
+        }
+    </script>
+
+</body>
+</html>
